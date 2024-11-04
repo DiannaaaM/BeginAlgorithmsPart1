@@ -31,11 +31,18 @@ public class IntegerListImpl implements IntegerList {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Index out of bounds: " + index);
         }
+        if (index == size) {
+            grow();
+        }
         ensureCapacity();
         System.arraycopy(items, index, items, index + 1, size - index);
         items[index] = item;
         size++;
         return item;
+    }
+    private void grow() {
+        int newCapacity = (int) (items.length * 1.5);
+        items = Arrays.copyOf(items, newCapacity);
     }
     @Override
     public Integer set(int index, Integer item) {
